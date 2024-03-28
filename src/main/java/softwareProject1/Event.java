@@ -1,19 +1,14 @@
 package softwareProject1;
 
+
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Vector;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -106,6 +101,8 @@ public class Event {
 	public int createEvent(int currentUser, String bride_name, String groom_name, int budget, Date date, Time starting_time, int duration, int guests, String theme, String city) {
 	 
 	    if (isEventExists(bride_name, groom_name)) {
+	    
+
 	        JOptionPane.showMessageDialog(null, "The wedding event you are trying to create already exists. Please navigate to the menu and choose manage your events to edit the event's details.");
 	        return -1;
 	    }
@@ -158,7 +155,7 @@ public class Event {
 
 	
 
-	private static boolean isEventExists(String bride_name, String groom_name) {
+	boolean isEventExists(String bride_name, String groom_name) {
 	 
 	    String query = "SELECT COUNT(*) FROM dream.event WHERE \"bride full name\" = ? AND \"groom full name\" = ?";
 	    
@@ -318,6 +315,8 @@ public void deleteEvent(int serial) {
 
 	        int rowsAffected = stmt.executeUpdate();
 	        if (rowsAffected > 0) {
+	        	
+
 	            JOptionPane.showMessageDialog(null, "Event with serial number " + serial + " has been deleted successfully.");
 	        } else {
 	            JOptionPane.showMessageDialog(null, "Failed to delete event with serial number " + serial + ".");
@@ -482,7 +481,7 @@ public String retrieveEventData(DefaultTableModel model, int eventSerialNumber) 
             stmt.setString(1, brideName);
             stmt.setString(2, groomName);
             stmt.setInt(3, budget);
-            stmt.setDate(4, date);
+            stmt.setDate(4,date);
             stmt.setInt(5, guests);
             stmt.setString(6, theme);
             stmt.setString(7, city);

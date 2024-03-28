@@ -1,15 +1,11 @@
 package Interfacce;
 import java.awt.event.ActionListener;
 import java.sql.Date;
-
 import java.util.List;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 import softwareProject1.Event;
 import softwareProject1.User;
-
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -179,9 +175,8 @@ public class ManageEvents extends javax.swing.JFrame {
         		        int serial = (int) model1.getValueAt(selectedRowIndex, 0);
         		        String brideName = (String) model1.getValueAt(selectedRowIndex, 1);
         		        String groomName = (String) model1.getValueAt(selectedRowIndex, 2);
-        		        String StringDate=(String) model1.getValueAt(selectedRowIndex, 3); 
-        		        Date date = Date.valueOf(StringDate);
-        		        int budget = (int) model1.getValueAt(selectedRowIndex, 5);
+        		        Date date=(Date) model1.getValueAt(selectedRowIndex, 3); 
+        		         int budget = (int) model1.getValueAt(selectedRowIndex, 5);
         		        String theme = (String) model1.getValueAt(selectedRowIndex, 6);
         		        String city = (String) model1.getValueAt(selectedRowIndex, 7);
         		        int guests = (int) model1.getValueAt(selectedRowIndex, 8);
