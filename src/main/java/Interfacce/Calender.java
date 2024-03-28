@@ -22,6 +22,7 @@ import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 
+@SuppressWarnings("serial")
 public class Calender extends javax.swing.JFrame {
 
 	private User currentUser;

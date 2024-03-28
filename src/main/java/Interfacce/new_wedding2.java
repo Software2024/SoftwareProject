@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class new_wedding2 extends javax.swing.JFrame {
 	  Event Event1 = Event.getInstance();
 	private DefaultTableModel model1;
@@ -46,7 +47,8 @@ public class new_wedding2 extends javax.swing.JFrame {
   }
 
                       
-    private void initComponents() {
+    @SuppressWarnings("deprecation")
+	private void initComponents() {
     	theme=Event1.getTheme();
     	 ven = new venue();
     	 std = new studio();
@@ -347,10 +349,12 @@ public class new_wedding2 extends javax.swing.JFrame {
         		"NUMBER", "NAME", "PRICE", "CAPACITY", "DESCRIPTION", "LOCATION", "BOOKED"
         	}
         ) {
-        	Class[] columnTypes = new Class[] {
+        	@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] {
         		Object.class, Object.class, Object.class, Object.class, Object.class, Object.class, Boolean.class
         	};
-        	public Class getColumnClass(int columnIndex) {
+        	@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
         	boolean[] columnEditables = new boolean[] {
@@ -486,10 +490,12 @@ public class new_wedding2 extends javax.swing.JFrame {
         		"NUMBER", "NAME", "THEME", "PRICE", "CITY", "BOOKED"
         	}
         ) {
-        	Class[] columnTypes = new Class[] {
+        	@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] {
         		Object.class, Object.class, Object.class, Object.class, Object.class, Boolean.class
         	};
-        	public Class getColumnClass(int columnIndex) {
+        	@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
         	boolean[] columnEditables = new boolean[] {
@@ -628,10 +634,12 @@ public class new_wedding2 extends javax.swing.JFrame {
         		"NUMBER", "NAME", "PRICE", "CITY", "BOOKED"
         	}
         ) {
-        	Class[] columnTypes = new Class[] {
+        	@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] {
         		Object.class, Object.class, Object.class, Object.class, Boolean.class
         	};
-        	public Class getColumnClass(int columnIndex) {
+        	@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
         	boolean[] columnEditables = new boolean[] {
@@ -768,10 +776,12 @@ public class new_wedding2 extends javax.swing.JFrame {
         		"NUMBER", "NAME", "PRICE", "PACKAGE", "CITY", "BOOKED"
         	}
         ) {
-        	Class[] columnTypes = new Class[] {
+        	@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] {
         		Integer.class, String.class, Integer.class, String.class, String.class, Boolean.class
         	};
-        	public Class getColumnClass(int columnIndex) {
+        	@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
         	boolean[] columnEditables = new boolean[] {
@@ -906,10 +916,12 @@ public class new_wedding2 extends javax.swing.JFrame {
         		"NUMBER", "NAME", "PRICE", "PACKAGE", "BOOKED"
         	}
         ) {
-        	Class[] columnTypes = new Class[] {
+        	@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] {
         		Object.class, Object.class, Object.class, Object.class, Boolean.class
         	};
-        	public Class getColumnClass(int columnIndex) {
+        	@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
         	boolean[] columnEditables = new boolean[] {

@@ -5,6 +5,7 @@ import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 
+@SuppressWarnings("serial")
 public class menu_user extends javax.swing.JFrame {
 
   
@@ -15,7 +16,8 @@ public class menu_user extends javax.swing.JFrame {
     }
 
                           
-    private void initComponents() {
+    @SuppressWarnings("deprecation")
+	private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();

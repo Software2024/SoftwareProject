@@ -151,7 +151,8 @@ public class sign_in_frame extends javax.swing.JFrame {
         User signin = new User();
         String ad;
         String e = jTextField1.getText();
-        String pass = jPasswordField1.getText();
+        @SuppressWarnings("deprecation")
+		String pass = jPasswordField1.getText();
         String ad1 = (String) jComboBox1.getSelectedItem();
 
         if ("user".equals(ad1)) {

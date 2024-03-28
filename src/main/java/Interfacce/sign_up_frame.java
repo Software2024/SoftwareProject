@@ -70,7 +70,8 @@ public class sign_up_frame extends javax.swing.JFrame {
         	    int ssn;
         	    int pn;
         	    String e = jTextField1.getText();
-        	    String pass = jPasswordField1.getText();
+        	    @SuppressWarnings("deprecation")
+				String pass = jPasswordField1.getText();
         	    String fn = jTextField2.getText();
         	    String ln = jTextField3.getText();
         	    String pn1 = jTextField5.getText();

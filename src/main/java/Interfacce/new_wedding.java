@@ -21,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.JDateChooser;
 
+@SuppressWarnings("serial")
 public class new_wedding extends javax.swing.JFrame {
 	private User currentUser;
     private int ssn;
@@ -33,7 +34,8 @@ public int result;
     }
 
                
-    private void initComponents() {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -323,9 +325,12 @@ public int result;
     }
 
     
-    private javax.swing.JComboBox comboBox ;
-    private javax.swing.JComboBox comboBox_1 ;
-    private com.toedter.calendar.JDateChooser dateChooser ;          
+
+	@SuppressWarnings("rawtypes")
+	private javax.swing.JComboBox comboBox ;
+   
+	@SuppressWarnings("rawtypes")
+	private javax.swing.JComboBox comboBox_1 ;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

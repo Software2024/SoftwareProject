@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 
 
+@SuppressWarnings("serial")
 public class WelcomePage extends javax.swing.JFrame {
 
     public WelcomePage() {

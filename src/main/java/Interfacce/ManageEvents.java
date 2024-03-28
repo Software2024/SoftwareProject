@@ -18,6 +18,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+@SuppressWarnings("serial")
 public class ManageEvents extends javax.swing.JFrame {
 
    
@@ -124,10 +125,12 @@ public class ManageEvents extends javax.swing.JFrame {
         		"NUMBER", "BRIDE", "GROOM", "DATE", "TOTAL COST", "BUDGET", "THEME", "CITY", "GUESTS"
         	}
         ) {
-        	Class[] columnTypes = new Class[] {
+        	@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] {
         		Object.class, Object.class, Object.class, String.class, Object.class, Object.class, Object.class, Object.class, Object.class
         	};
-        	public Class getColumnClass(int columnIndex) {
+        	@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
         	boolean[] columnEditables = new boolean[] {

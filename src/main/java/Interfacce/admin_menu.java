@@ -19,6 +19,7 @@ import softwareProject1.*;
  *
  * @author asus
  */
+@SuppressWarnings("serial")
 public class admin_menu extends javax.swing.JFrame {
     public admin_menu() {
         initComponents();
@@ -261,11 +262,13 @@ public class admin_menu extends javax.swing.JFrame {
                 "NUMBER", "BRIDE", "GROOM", "BUDGET", "DATE", "TIME", "DURATION", "GUESTS", "THEME", "CITY"
             }
         ) {
-            Class[] types = new Class [] {
+            @SuppressWarnings("rawtypes")
+			Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
-            public Class getColumnClass(int columnIndex) {
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
