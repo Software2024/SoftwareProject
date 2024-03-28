@@ -38,7 +38,7 @@ public class Calender extends javax.swing.JFrame {
        
        List<Object[]> eventData = currentUser.retrieveEvents(ssn,currentUser.isAdmin(ssn));
        for (Object[] row : eventData) {
-           Date eventDate = (Date) row[3]; 
+          final Date eventDate = (Date) row[3]; 
            String eventInfo = "Event Number: " + row[0] + "\n" +
                               "Bride: " + row[1] + "\n" +
                               "Groom: " + row[2] + "\n" +
@@ -156,10 +156,15 @@ public class Calender extends javax.swing.JFrame {
                     return Color.RED; 
                 }
 
-                @Override
-                public Color getSpecialBackroundColor() {
-                    return null; // You can set background color if needed
-                }
+              
+
+				
+
+				@Override
+				public String getSpecialTooltip() {
+					
+					return eventsMap.get(eventDate);
+				}
 
 				@Override
 				public Color getInvalidBackroundColor() {
@@ -180,9 +185,9 @@ public class Calender extends javax.swing.JFrame {
 				}
 
 				@Override
-				public String getSpecialTooltip() {
-					
-					return eventsMap.get(eventDate);
+				public Color getSpecialBackroundColor() {
+					// TODO Auto-generated method stub
+					return null;
 				}
 
 				@Override
@@ -190,6 +195,7 @@ public class Calender extends javax.swing.JFrame {
 					// TODO Auto-generated method stub
 					return false;
 				}
+
             });
         }
     }
