@@ -138,7 +138,7 @@ public class Calender extends javax.swing.JFrame {
     }
     void updateCalendarEvents() {
     	
-        for (Date eventDate : eventsMap.keySet()) {
+        for (final Date eventDate : eventsMap.keySet()) {
             calendar.getDayChooser().addDateEvaluator(new IDateEvaluator() {
                 @Override
                 public boolean isSpecial(Date date) {
