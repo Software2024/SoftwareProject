@@ -1,16 +1,11 @@
 package softwareProject1;
-
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import java.awt.Component;
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-
 import javax.swing.JOptionPane;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -22,7 +17,6 @@ public class testEvent {
     private String groomName;
     private int budget;
     private Date date1;
-    private Date date;
     private Time time;
     private int duration;
     private String theme;
@@ -30,6 +24,9 @@ public class testEvent {
     private int guests;
 	private int ssn;
 	private int serial;
+	private String serviceType;
+	 private int serviceNumber;
+	 private int servicePrice;
 	@Given("User is signed in")
     public void user_is_signed_in() {
         user = User.getInstance();
@@ -88,8 +85,7 @@ public class testEvent {
 
     @Given("Today's date is {string}")
     public void today_s_date_is(String todayDate) {
-LocalDate today = LocalDate.now();
-        this.date = Date.valueOf(today);
+
     }
     @When("User fills event date as {string}")
     public void user_fills_event_date_as(String string) {
@@ -154,4 +150,49 @@ LocalDate today = LocalDate.now();
         assertThat(confirmationMessage).isEqualTo("Event deleted successfully.");
     }
     }
+    @Given("an event with serial number {int}")
+    public void an_event_with_serial_number(Integer int1) {
+      serial=event.getSerial();
+    }
+
+    @When("I add the service type\"dj\"to the event with service number {int}")
+    public void i_add_the_service_type_dj_to_the_event_with_service_number(Integer int1) {
+       this.serviceType="dj";
+       this.serviceNumber=1;
+    }
+
+    @When("service price {int}")
+    public void service_price(Integer int1) {
+      this.servicePrice= event.getServicePrice(serviceType, serviceNumber);
+    }
+
+    @When("the event doesnt have a booked service type\"dj\"")
+    public void the_event_doesnt_have_a_booked_service_type_dj() {
+      assertFalse(event.isBooked2(serial, serviceType));
+    }
+
+    @Then("the event should be updated successfully")
+    public void the_event_should_be_updated_successfully() {
+       assertTrue(event.editEvent(serial, serviceNumber, serviceType, servicePrice));
+    }
+    @When("I delete the service type\"dj\" with number {int} from the event")
+    public void i_delete_the_service_type_dj_with_number_from_the_event(Integer int1) {
+    	 this.serviceType="dj";
+         this.serviceNumber=1;
+    }
+
+
+
+    @When("the service type\"dj\"with number {int} is booked for event")
+    public void the_service_type_dj_with_number_is_booked_for_event(Integer int1) {
+        int result=(event.isBooked(serial, serviceNumber, serviceType, servicePrice));
+        assertThat(result).isNotEqualTo(-1);
+    }
+
+    @Then("the service should be removed from the event successfully")
+    public void the_service_should_be_removed_from_the_event_successfully() {
+       assertTrue(event.deleteFromEvent(serial, serviceNumber, serviceType, servicePrice));
+      
+    }
+
 }

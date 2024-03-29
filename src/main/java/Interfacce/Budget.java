@@ -125,6 +125,6 @@ public class Budget extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable jTable1;
+    public static javax.swing.JTable jTable1;
    public java.awt.TextArea textArea1;
 }

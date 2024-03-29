@@ -7,13 +7,17 @@ import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import softwareProject1.*;
+import java.awt.Dimension;
 
 /**
  *
@@ -43,7 +47,7 @@ public class admin_menu extends javax.swing.JFrame {
         USERS = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
-        button1 = new java.awt.Button();
+        button1 = new JButton();
         jLabel5 = new javax.swing.JLabel();
         EVENTS = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -167,7 +171,7 @@ public class admin_menu extends javax.swing.JFrame {
         panel2.setPreferredSize(new java.awt.Dimension(660, 688));
 
         USERS.setBackground(new java.awt.Color(31, 89, 130));
-        USERS.setPreferredSize(new java.awt.Dimension(660, 580));
+        USERS.setPreferredSize(new Dimension(660, 680));
         USERS.setRequestFocusEnabled(false);
         USERS.setVerifyInputWhenFocusTarget(false);
 
@@ -245,36 +249,22 @@ public class admin_menu extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("EVENTS");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "NUMBER", "BRIDE", "GROOM", "BUDGET", "DATE", "TIME", "DURATION", "GUESTS", "THEME", "CITY"
-            }
-        ) {
-            @SuppressWarnings("rawtypes")
-			Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-
-            @SuppressWarnings({ "rawtypes", "unchecked" })
-			public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        jTable2.setModel(new DefaultTableModel(
+        	new Object[][] {
+        		{null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null},
+        	},
+        	new String[] {
+        		"NUMBER", "BRIDE", "GROOM", "DATE", "TOTAL COST", "BUDGET", "THEME", "CITY", "GUESTS"
+        	}
+        ));
         jTable2.setColumnSelectionAllowed(true);
         jScrollPane2.setViewportView(jTable2);
-        jTable2.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         jButton2.setBackground(new java.awt.Color(31, 89, 130));
         jButton2.setFont(new java.awt.Font("Rockwell", 1, 18)); // NOI18N
@@ -977,35 +967,11 @@ public class admin_menu extends javax.swing.JFrame {
         USERS.setVisible(false);
        CALENDER.setVisible(false);
         SERVICES.setVisible(false);
-    
-     try {
-         
-    try (Connection conn = DataBasecon.getConnection(); 
-         Statement stmt = conn.createStatement(); 
-         ResultSet rsUser = stmt.executeQuery("SELECT * FROM dream.event")) {
-   
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        model.setRowCount(0);
-        
-        while (rsUser.next()) {
-            Object[] row = new Object[10];
-            row[0] = rsUser.getInt("number");
-            row[1] = rsUser.getString("bride full name");
-            row[2] = rsUser.getString("groom full name");
-            row[3] = rsUser.getInt("budget");
-            row[4] = rsUser.getDate("date");
-            row[5] = rsUser.getTime("starting time");
-            row[6] = rsUser.getInt("duration");
-            row[7] = rsUser.getInt("guest count");
-            row[8] = rsUser.getString("theme");
-            row[9] = rsUser.getString("city_location");
-     
-            model.addRow(row);
-        }
-    } 
-} catch (SQLException ex) {
-    ex.printStackTrace();
-}
+        User currentUser = User.getInstance();
+        int ssn = currentUser.getSSN();
+     	 List<Object[]> eventData= currentUser.retrieveEvents(ssn,true);
+		 currentUser.populateTableModel( model,eventData);
     }
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1097,7 +1063,7 @@ new sign_in_frame().setVisible(true);
     } catch (SQLException ex) {
         ex.printStackTrace(); 
     }
-    }//GEN-LAST:event_usersActionPerformed
+    }
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
        int selectedIndex = jTable4.getSelectedRow();
@@ -1296,7 +1262,7 @@ new sign_in_frame().setVisible(true);
     String name = model.getValueAt(index, 1).toString();
     int price = Integer.parseInt(model.getValueAt(index, 3).toString());
     String theme = model.getValueAt(index, 2).toString();
-    String city = model.getValueAt(index, 3).toString();
+    String city = model.getValueAt(index, 4).toString();
      decoration myDecor = new decoration();
     myDecor.addDecorations(number, name, price, theme,city);
 } catch (SQLException ex) {
@@ -1311,8 +1277,8 @@ new sign_in_frame().setVisible(true);
     if (selectedIndex != -1) {
         DefaultTableModel model = (DefaultTableModel) jTable7.getModel();
         String newName = model.getValueAt(selectedIndex, 1).toString();
-        int newPrice = Integer.parseInt(model.getValueAt(selectedIndex, 2).toString());
-        String newTheme = model.getValueAt(selectedIndex, 3).toString();
+        int newPrice = Integer.parseInt(model.getValueAt(selectedIndex, 3).toString());
+        String newTheme = model.getValueAt(selectedIndex, 2).toString();
         int decorNumber = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString()); 
         String city = model.getValueAt(selectedIndex, 4).toString();
         decoration decoration = new decoration();
@@ -1465,38 +1431,38 @@ new sign_in_frame().setVisible(true);
     }
 
    
-    private javax.swing.JPanel CALENDER;
-    private javax.swing.JPanel EVENTS;
-    private javax.swing.JPanel HOME;
-    private javax.swing.JPanel SERVICES;
-    private javax.swing.JPanel USERS;
-    private java.awt.Button button1;
-    private javax.swing.JButton calender;
-    private javax.swing.JButton events;
-    private javax.swing.JButton exit;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private com.toedter.calendar.JCalendar jCalendar1;
+  javax.swing.JPanel CALENDER;
+    javax.swing.JPanel EVENTS;
+    javax.swing.JPanel HOME;
+  javax.swing.JPanel SERVICES;
+    javax.swing.JPanel USERS;
+    public JButton button1;
+    javax.swing.JButton calender;
+    public javax.swing.JButton events;
+    javax.swing.JButton exit;
+   javax.swing.JButton jButton10;
+   public javax.swing.JButton jButton11;
+     javax.swing.JButton jButton12;
+   javax.swing.JButton jButton13;
+     javax.swing.JButton jButton14;
+    javax.swing.JButton jButton15;
+     javax.swing.JButton jButton16;
+   javax.swing.JButton jButton17;
+    javax.swing.JButton jButton18;
+   javax.swing.JButton jButton19;
+    javax.swing.JButton jButton2;
+     javax.swing.JButton jButton20;
+     javax.swing.JButton jButton21;
+    javax.swing.JButton jButton22;
+     javax.swing.JButton jButton23;
+    javax.swing.JButton jButton24;
+     javax.swing.JButton jButton4;
+     javax.swing.JButton jButton5;
+   javax.swing.JButton jButton6;
+    javax.swing.JButton jButton7;
+     javax.swing.JButton jButton8;
+    javax.swing.JButton jButton9;
+    com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1527,7 +1493,7 @@ new sign_in_frame().setVisible(true);
     private java.awt.Panel panel1;
     private javax.swing.JPanel panel2;
     private javax.swing.JButton services;
-    private javax.swing.JButton users;
+    public javax.swing.JButton users;
   
 
 }

@@ -16,18 +16,8 @@ public class Event {
 	private int serialNumber;
 	public String bride_name;
 	public String groom_name;
-	private int budget ;
 	public Date date ; 
-	private Time starting_time;
-	private int duration;
 	private int guests;
-	private int venue;
-	private int studio;
-	private int dec;
-	private int dj;
-	private int cater;
-	private int total_cost;
-	private int creator_id;
 	public String theme;
 	public String city;
 	private static Event instance;
@@ -35,19 +25,9 @@ public class Event {
 	 serialNumber=-1;
 		 bride_name=null;
 	 groom_name=null;
-	 budget=0 ;
-	date=null ; 
-		starting_time=null;
-		 duration=-1;
-		 guests=-1;
-	 venue=-1;
-		studio=-1;
-	 dec=-1;
-		 dj=-1;
-		 cater=-1;
-	 total_cost=-1;
-	 creator_id=-1;
-		 theme=null;
+	 date=null ; 
+		guests=-1;
+	 theme=null;
 		city=null;	
 	}
 	public static Event getInstance() {
@@ -402,7 +382,7 @@ public String retrieveEventData(DefaultTableModel model, int eventSerialNumber) 
 
 
 
-    private int getServicePrice(String serviceType, int serviceNumber) {
+    int getServicePrice(String serviceType, int serviceNumber) {
         int servicePrice = 0;
         String query = "";
         String column = "";

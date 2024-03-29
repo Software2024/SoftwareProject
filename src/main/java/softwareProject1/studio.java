@@ -175,5 +175,6 @@ public class studio {
       JOptionPane.showMessageDialog(null, "Error removing Studio: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
   }
 }
+	
 	}
 	

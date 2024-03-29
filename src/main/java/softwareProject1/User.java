@@ -15,27 +15,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class User {
 private int ssn;
-private String first_name;
-private String last_name;
-private String email;
-private String password; 
-private int phone_number;
 private static User instance;
 public User() {
 	ssn =-1;
-	first_name=null;
-	last_name=null;
-	email=null;
-	password=null;
-	phone_number=-1;
 }
 public User(int ssn, String firstName, String lastName, String email, String password, int phoneNumber) {
     this.ssn = ssn;
-    this.first_name = firstName;
-    this.last_name = lastName;
-    this.email = email;
-    this.password = password;
-    this.phone_number = phoneNumber;
     
 }
 
@@ -89,6 +74,7 @@ public boolean Signup(int ssn, String first_name, String last_name, String email
                 q.executeUpdate();
                 getInstance();
                 setSSN(ssn);
+                JOptionPane.showMessageDialog(null, "Welcome.");
                return true;
             } catch (SQLException e) {
                 e.printStackTrace(); 
@@ -112,6 +98,8 @@ public boolean Login(String email, String password,String tableName) {
 	                    	int ssn=rs.getInt("ssn");
 	                    	  getInstance();
 	                    	setSSN(ssn);
+
+	                        JOptionPane.showMessageDialog(null, "Welcome.");
 	                        return true;
 	                    } else {
 	                        JOptionPane.showMessageDialog(null, "Incorrect password. Please try again.");
@@ -211,7 +199,7 @@ public boolean Login(String email, String password,String tableName) {
 	    
 	    return isAdmin;
 	}
-	  public void removeUser(int selectedIndex, int ssn) throws SQLException {
+	  public boolean removeUser(int selectedIndex, int ssn) throws SQLException {
 		    String queryDelete = "DELETE FROM dream.user WHERE ssn = ?";
 		    try (Connection con = DataBasecon.getConnection();
 		         PreparedStatement stmtDelete = con.prepareStatement(queryDelete)) {
@@ -219,12 +207,14 @@ public boolean Login(String email, String password,String tableName) {
 		        int rowsAffected = stmtDelete.executeUpdate();
 		        if (rowsAffected > 0) {
 		            JOptionPane.showMessageDialog(null, "User removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-		       
+		       return true;
 		        }
 		    } catch (SQLException ex) {
 		        ex.printStackTrace();
 		        JOptionPane.showMessageDialog(null, "Error removing User: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		      
 		    }
+		    return false;
 		}
 	
 	    

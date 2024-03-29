@@ -16,6 +16,7 @@ public class venue {
 	public int capacity;
 	public String location;
 	public String description;
+	public String city;
 	
 	public venue(){
 		number = -1;
@@ -221,7 +222,9 @@ public class venue {
   public void setDescription(String description) {
       this.description = description;
   }
-
+  public void setCity(String description) {
+      this.city = description;
+  }
   public int getNumber() {
       return number;
   }
@@ -245,5 +248,7 @@ public class venue {
   public String getDescription() {
       return description;
   }
-
+  public String getCity() {
+      return city;
+  }
 	}
