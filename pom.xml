@@ -6,6 +6,9 @@
   <name>ZAINA</name>
 
  <properties>
+	
+     <maven.compiler.source>1.8</maven.compiler.source>
+     <maven.compiler.target>1.8</maven.compiler.target>
   <sonar.organization>software2024</sonar.organization>
   <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 </properties>
