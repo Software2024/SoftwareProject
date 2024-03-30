@@ -4,11 +4,10 @@
   <artifactId>newProject</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>ZAINA</name>
-  <properties>
-  <sonar.organization>se2024year3</sonar.organization>
+
+ <properties>
+  <sonar.organization>software2024</sonar.organization>
   <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-   <maven.compiler.source>7</maven.compiler.source>
-        <maven.compiler.target>7</maven.compiler.target>
 </properties>
 <dependencies>
 <dependency>
