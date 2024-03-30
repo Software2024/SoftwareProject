@@ -8,8 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -34,7 +33,8 @@ public class admin_menu extends javax.swing.JFrame {
        CALENDER.setVisible(false);
     }
 
-    private void initComponents() {
+    @SuppressWarnings("deprecation")
+	private void initComponents() {
 
         panel1 = new java.awt.Panel();
         events = new javax.swing.JButton();
@@ -1127,12 +1127,8 @@ new sign_in_frame().setVisible(true);
         String newDescription = model.getValueAt(selectedIndex, 6).toString();
         int venueNumber = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString()); 
 
-        try {
-            venue venue = new venue();
-            venue.editVenue(newName, newPrice, newCapacity, newLocation,newCity, newDescription, venueNumber);
-        } catch (SQLException ex) {
-            Logger.getLogger(admin_menu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        venue venue = new venue();
+		venue.editVenue(newName, newPrice, newCapacity, newLocation,newCity, newDescription, venueNumber);
     } else {
         JOptionPane.showMessageDialog(null, "Please select a row to edit.", "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -1145,12 +1141,8 @@ new sign_in_frame().setVisible(true);
         int venueNumber = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
 
         venue myVenue = new venue();
-        try {
-            myVenue.removeVenue(selectedIndex, venueNumber);
-            model.removeRow(selectedIndex);
-        } catch (SQLException ex) {
-            Logger.getLogger(admin_menu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        myVenue.removeVenue(selectedIndex, venueNumber);
+		model.removeRow(selectedIndex);
     } else {
         JOptionPane.showMessageDialog(null, "Please select a row to remove.", "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -1168,8 +1160,6 @@ new sign_in_frame().setVisible(true);
     String package1 = model.getValueAt(index, 4).toString();
      studio myStudio = new studio();
     myStudio.addStudio(number, name, price,city,package1);
-} catch (SQLException ex) {
-    ex.printStackTrace();
 } catch (Exception ex) {
     ex.printStackTrace();
 }
@@ -1314,8 +1304,6 @@ new sign_in_frame().setVisible(true);
     String city = model.getValueAt(index,4).toString();
      cater myCater = new cater();
     myCater.addCater(number, name, price, Package,city);
-} catch (SQLException ex) {
-    ex.printStackTrace();
 } catch (Exception ex) {
     ex.printStackTrace();
 }

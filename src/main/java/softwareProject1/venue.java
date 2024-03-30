@@ -10,28 +10,25 @@ import javax.swing.table.DefaultTableModel;
 
 public class venue {
 
-	public int number;
-	public String name;
-	public int price;
-	public int capacity;
-	public String location;
-	public String description;
-	public String city;
+	private int number;
+	private String name;
+	private int price;
+	private int capacity;
+	private String location;
+	private String description;
+	private String city;
 	
 	public venue(){
-		number = -1;
+                number = -1;
 		name = null;
 		capacity = -1;
 		location = null;
 		description = null;
+		city = null;
 	}
 	
-	public boolean areTheFieldsNull() {
-		if (name == null || location == null || description == null ||
-                number == -1 || price == -1 || capacity == -1) {
-			  return true;
-		} else 
-		return false;
+	public boolean areTheFieldsNull(int number, String name, int price, int capacity, String location, String description, String city) {
+            return name == null || location == null || description == null || number == -1 || price == -1 || capacity == -1 || city == null;
 		
 	}
 	public void refreshVenue(DefaultTableModel model, String city, Date date, int price, int guests, int currentEventSerialNumber) {
@@ -117,7 +114,6 @@ public class venue {
 	}
 
 
-	
 	public boolean venueAlreadyAdded(int number) throws SQLException {
 		  String query = "SELECT COUNT(*) FROM dream.venue WHERE number = ?";
 		  try (Connection con = DataBasecon.getConnection();
@@ -135,70 +131,83 @@ public class venue {
 		  }
 	 
 	}
-	public void addVenue(int number, String name, int price, int capacity, String city,String location, String description) throws SQLException{
-	
-  
-  if (venueAlreadyAdded(number)) {
-      JOptionPane.showMessageDialog(null, "This venue was already added", "Warning", JOptionPane.WARNING_MESSAGE);
-      return;
-  }
-  
-	                String query = "INSERT INTO dream.venue (number, name, price, capacity ,location ,description,city) VALUES (?, ?, ?, ?, ?, ?,?)";
-	                try (Connection con = DataBasecon.getConnection();
-	                     PreparedStatement q = con.prepareStatement(query)) {
-	                    q.setInt(1, number);
-	                    q.setString(2, name);
-	                    q.setInt(3, price);
-	                    q.setInt(4, capacity);
-	                    q.setString(5, location);
-	                    q.setString(6, description);
-	                    q.setString(7, city);
-	                    q.executeUpdate();
-	                    JOptionPane.showMessageDialog(null, "Venue successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
-	                } catch (SQLException e) {
-	                    e.printStackTrace();
-	                }
-      }
-   public void editVenue(String newName, int newPrice, int newCapacity, String newLocation,String newCity, String newDescription, int venueNumber) throws SQLException {
-  try (Connection con = DataBasecon.getConnection()) {
-      String queryUpdate = "UPDATE dream.venue SET name = ?, price = ?, capacity = ?, city = ?, description = ?,location=? WHERE number = ?";
-      try (PreparedStatement stmtUpdate = con.prepareStatement(queryUpdate)) {
-          stmtUpdate.setString(1, newName);
-          stmtUpdate.setInt(2, newPrice);
-          stmtUpdate.setInt(3, newCapacity);
-          stmtUpdate.setString(4, newLocation);
-          stmtUpdate.setString(5, newDescription);
-          stmtUpdate.setString(6, newCity);
-          stmtUpdate.setInt(7, venueNumber);
+	public boolean addVenue(int number, String name, int price, int capacity, String city, String location, String description) throws SQLException {
+	    if (areTheFieldsNull(number, name, price, capacity, location, description, city)) {
+	        JOptionPane.showMessageDialog(null, "You can't leave any of the fields empty!", "Warning", JOptionPane.WARNING_MESSAGE);
+	        return false;
+	    }
 
-          int rowsUpdated = stmtUpdate.executeUpdate();
+	    if (venueAlreadyAdded(number)) {
+	        JOptionPane.showMessageDialog(null, "This venue was already added", "Warning", JOptionPane.WARNING_MESSAGE);
+	        return false;
+	    }
 
-          if (rowsUpdated > 0) {
-              JOptionPane.showMessageDialog(null, "Venue updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-          }
-      }
-  } catch (SQLException e) {
-      JOptionPane.showMessageDialog(null, "Error updating venue: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-  }
-}
+	    String query = "INSERT INTO dream.venue (number, name, price, capacity ,location ,description, city) VALUES (?, ?, ?, ?, ?, ?,?)";
+	    try (Connection con = DataBasecon.getConnection();
+	         PreparedStatement q = con.prepareStatement(query)) {
+	        q.setInt(1, number);
+	        q.setString(2, name);
+	        q.setInt(3, price);
+	        q.setInt(4, capacity);
+	        q.setString(5, location);
+	        q.setString(6, description);
+	        q.setString(7, city);
+	        q.executeUpdate();
+	        JOptionPane.showMessageDialog(null, "Venue added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	        return true;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+	public boolean editVenue(String newName, int newPrice, int newCapacity, String newLocation, String newCity, String newDescription, int venueNumber) {
+	    boolean isUpdated = false;
+	    try (Connection con = DataBasecon.getConnection()) {
+	        String queryUpdate = "UPDATE dream.venue SET name = ?, price = ?, capacity = ?, location = ?, description = ?, city =? WHERE number = ?";
+	        try (PreparedStatement stmtUpdate = con.prepareStatement(queryUpdate)) {
+	            stmtUpdate.setString(1, newName);
+	            stmtUpdate.setInt(2, newPrice);
+	            stmtUpdate.setInt(3, newCapacity);
+	            stmtUpdate.setString(4, newLocation);
+	            stmtUpdate.setString(5, newDescription);
+	            stmtUpdate.setInt(7, venueNumber);
+	            stmtUpdate.setString(6, newCity);
+
+	            int rowsUpdated = stmtUpdate.executeUpdate();
+
+	            if (rowsUpdated > 0) {
+	                isUpdated = true;
+	                JOptionPane.showMessageDialog(null, "Venue updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        JOptionPane.showMessageDialog(null, "Error updating venue: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    return isUpdated;
+	}
 
 
 
-	public void removeVenue(int selectedIndex, int number) throws SQLException {
-  String queryDelete = "DELETE FROM dream.venue WHERE number = ?";
-  try (Connection con = DataBasecon.getConnection();
-       PreparedStatement stmtDelete = con.prepareStatement(queryDelete)) {
-      stmtDelete.setInt(1, number);
-      int rowsAffected = stmtDelete.executeUpdate();
-      if (rowsAffected > 0) {
-          JOptionPane.showMessageDialog(null, "Venue removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-     
-      }
-  } catch (SQLException ex) {
-      ex.printStackTrace();
-      JOptionPane.showMessageDialog(null, "Error removing venue: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-  }
-}
+
+	public boolean removeVenue(int selectedIndex, int number) {
+	    boolean isRemoved = false;
+	    String queryDelete = "DELETE FROM dream.venue WHERE number = ?";
+	    try (Connection con = DataBasecon.getConnection();
+	         PreparedStatement stmtDelete = con.prepareStatement(queryDelete)) {
+	        stmtDelete.setInt(1, number);
+	        int rowsAffected = stmtDelete.executeUpdate();
+	        if (rowsAffected > 0) {
+	            isRemoved = true;
+	            JOptionPane.showMessageDialog(null, "Venue removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	        }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error removing venue: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    return isRemoved;
+	}
+
        public void setNumber(int number) {
       this.number = number;
   }
@@ -222,9 +231,7 @@ public class venue {
   public void setDescription(String description) {
       this.description = description;
   }
-  public void setCity(String description) {
-      this.city = description;
-  }
+
   public int getNumber() {
       return number;
   }
@@ -248,7 +255,12 @@ public class venue {
   public String getDescription() {
       return description;
   }
-  public String getCity() {
-      return city;
-  }
+
+	public String getCity() {
+		return city;
 	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+}

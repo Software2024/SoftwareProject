@@ -11,19 +11,21 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class cater {
-	public int number;
-	public String name;
-	public int price;
-	public String Package;
+    private int number;
+	private String name;
+	private int price;
+	private String Package;
+	private String city;
 	
 	public cater() {
 		number = -1;
 		name = null;
 		price = -1;
 		Package = null;
+		city = null;
 	}
-	public boolean areTheFieldsNull() {
-		if (name == null || number == -1 || price == -1 || Package == null) {
+	public boolean areTheFieldsNull(int number, String name, int price, String Package, String city) {
+		if (name == null || number == -1 || price == -1 || Package == null || city == null) {
 			  return true;
 		} else 
 		return false;
@@ -119,61 +121,117 @@ public class cater {
 		            }
 		  }
 	}
-	public void addCater(int number, String name, int price, String Package,String city) throws HeadlessException, SQLException {
-		  if (areTheFieldsNull()) {
-		        if (!caterAlreadyAdded(number)) {
-		            String query = "INSERT INTO dream.cater (number, name, price, package,city) VALUES (?, ?, ?, ?,?)";
-		            try (Connection con = DataBasecon.getConnection();
-		                 PreparedStatement q = con.prepareStatement(query)) {
-		                q.setInt(1, number);
-		                q.setString(2, name);
-		                q.setInt(3, price);
-		                q.setString(4, Package);
-		                q.setString(5,city);
-		                q.executeUpdate();
-		                JOptionPane.showMessageDialog(null, "Cater successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
-		            } catch (SQLException e) {
-		                e.printStackTrace();
-		            }
-		        } else {
-		            JOptionPane.showMessageDialog(null, "This caterer was already added", "Warning", JOptionPane.WARNING_MESSAGE);
-		        }
-		    } else {
-		        JOptionPane.showMessageDialog(null, "You can't leave any of the fields empty!", "Warning", JOptionPane.WARNING_MESSAGE);
-		    }
-		}
-	public void editCater(int caterNumber, String newName, int newPrice, String newPackage,String city) {
-	 try (Connection con = DataBasecon.getConnection()) {
-       String queryUpdate = "UPDATE dream.cater SET name = ?, price = ?, package = ?,city=? WHERE number = ?";
-       try (PreparedStatement stmtUpdate = con.prepareStatement(queryUpdate)) {
-           stmtUpdate.setString(1, newName);
-           stmtUpdate.setInt(2, newPrice);
-           stmtUpdate.setString(3, newPackage);
-           stmtUpdate.setString(4, city);
-           stmtUpdate.setInt(5, caterNumber);
-           int rowsUpdated = stmtUpdate.executeUpdate();
+	public boolean addCater(int number, String name, int price, String Package, String city) {
+	    boolean isAdded = false;
+	    try {
+	        if (areTheFieldsNull(number, name, price, Package, city)) {
+	            JOptionPane.showMessageDialog(null, "You can't leave any of the fields empty!", "Warning", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	        }
 
-           if (rowsUpdated > 0) {
-               JOptionPane.showMessageDialog(null, "Caterer updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-           }
-       }
-   } catch (SQLException e) {
-       JOptionPane.showMessageDialog(null, "Error updating caterer: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-   }
+	        if (caterAlreadyAdded(number)) {
+	            JOptionPane.showMessageDialog(null, "This caterer was already added", "Warning", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	        }
+
+	        String query = "INSERT INTO dream.cater (number, name, price, package, city) VALUES (?, ?, ?, ?, ?)";
+	        try (Connection con = DataBasecon.getConnection();
+	             PreparedStatement q = con.prepareStatement(query)) {
+	            q.setInt(1, number);
+	            q.setString(2, name);
+	            q.setInt(3, price);
+	            q.setString(4, Package);
+	            q.setString(5, city);
+	            q.executeUpdate();
+	            isAdded = true;
+	            JOptionPane.showMessageDialog(null, "Caterer added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    } catch (HeadlessException | SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return isAdded;
 	}
-	public void removeCater(int selectedIndex, int number) {
+
+	public boolean editCater(int caterNumber, String newName, int newPrice, String newPackage, String newCity) {
+	    boolean isUpdated = false;
+	    try (Connection con = DataBasecon.getConnection()) {
+	        String queryUpdate = "UPDATE dream.cater SET name = ?, price = ?, package = ?, city = ? WHERE number = ?";
+	        try (PreparedStatement stmtUpdate = con.prepareStatement(queryUpdate)) {
+	            stmtUpdate.setString(1, newName);
+	            stmtUpdate.setInt(2, newPrice);
+	            stmtUpdate.setString(3, newPackage);
+	            stmtUpdate.setString(4, newCity);
+	            stmtUpdate.setInt(5, caterNumber);
+	            int rowsUpdated = stmtUpdate.executeUpdate();
+
+	            if (rowsUpdated > 0) {
+	                isUpdated = true;
+	                JOptionPane.showMessageDialog(null, "Caterer updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        JOptionPane.showMessageDialog(null, "Error updating caterer: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    return isUpdated;
+	}
+
+	public boolean removeCater(int selectedIndex, int number) {
+	    boolean isRemoved = false;
 	    String queryDelete = "DELETE FROM dream.cater WHERE number = ?";
-   try (Connection con = DataBasecon.getConnection();
-        PreparedStatement stmtDelete = con.prepareStatement(queryDelete)) {
-       stmtDelete.setInt(1, number);
-       int rowsAffected = stmtDelete.executeUpdate();
-       if (rowsAffected > 0) {
-           JOptionPane.showMessageDialog(null, "Caterer removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-      
-       }
-   } catch (SQLException ex) {
-       ex.printStackTrace();
-       JOptionPane.showMessageDialog(null, "Error removing Caterer: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-   }
+	    try (Connection con = DataBasecon.getConnection();
+	         PreparedStatement stmtDelete = con.prepareStatement(queryDelete)) {
+	        stmtDelete.setInt(1, number);
+	        int rowsAffected = stmtDelete.executeUpdate();
+	        if (rowsAffected > 0) {
+	            isRemoved = true;
+	            JOptionPane.showMessageDialog(null, "Caterer removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	        }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error removing Caterer: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    return isRemoved;
 	}
+
+	 public int getNumber() {
+	        return number;
+	    }
+
+	    public void setNumber(int number) {
+	        this.number = number;
+	    }
+
+	    public String getName() {
+	        return name;
+	    }
+
+	    public void setName(String name) {
+	        this.name = name;
+	    }
+
+	    public int getPrice() {
+	        return price;
+	    }
+
+	    public void setPrice(int price) {
+	        this.price = price;
+	    }
+
+	    public String getPackage() {
+	        return Package;
+	    }
+
+	    public void setPackage(String Package) {
+	        this.Package = Package;
+	    }
+		public String getCity() {
+			return city;
+		}
+		public void setCity(String city) {
+			this.city = city;
+		}
 }
+
+

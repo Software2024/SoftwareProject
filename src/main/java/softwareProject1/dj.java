@@ -11,23 +11,23 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class dj {
-	public int number;
-	public String name;
-	public int price;
-	
-	
-	public dj() {
-		number = -1;
-		name = null;
-		price= -1; }
+	private int number;
+private String name;
+private int price;
+private String city;
 
-	public boolean areTheFieldsNull() {
-		if (name == null || number == -1 || price == -1) {
-			  return true;
-		} else 
-		return false;
-		
+
+public dj() {
+	number=-1;
+	name =null;
+	price =-1;
+	city = null;
 	}
+
+public boolean areTheFieldsNull(int number, String name, int price,String city) {
+            return name == null || number == -1 || price == -1 || city == null;
+	
+}
 	public void refreshDj(DefaultTableModel model, String city, Date date, int price, int currentEventSerialNumber) {
 	    model.setRowCount(0);
 	    StringBuilder queryBuilder = new StringBuilder("SELECT c.*, ");
@@ -117,59 +117,107 @@ public class dj {
 		  }
 	}
 	
-	public void addDj(int number, String name, int price,String city) throws HeadlessException, SQLException {
-		  if (areTheFieldsNull()) {
-		        if (!djAlreadyAdded(number)) {
-		            String query = "INSERT INTO dream.dj (number, name, price,city) VALUES (?, ?, ?,?)";
-		            try (Connection con = DataBasecon.getConnection();
-		                 PreparedStatement q = con.prepareStatement(query)) {
-		                q.setInt(1, number);
-		                q.setString(2, name);
-		                q.setInt(3, price);
-		                q.setString(4,city);
-		                q.executeUpdate();
-		                JOptionPane.showMessageDialog(null, "Dj successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
-		            } catch (SQLException e) {
-		                e.printStackTrace();
-		            }
-		        } else {
-		            JOptionPane.showMessageDialog(null, "This dj was already added", "Warning", JOptionPane.WARNING_MESSAGE);
-		        }
-		    } else {
-		        JOptionPane.showMessageDialog(null, "You can't leave any of the fields empty!", "Warning", JOptionPane.WARNING_MESSAGE);
-		    }
-		}
-	
-	public void editDj(int djNumber, String newName, int newPrice,String city) {
-		 try (Connection con = DataBasecon.getConnection()) {
-       String queryUpdate = "UPDATE dream.dj SET name = ?, price = ?,city=? WHERE number = ?";
-       try (PreparedStatement stmtUpdate = con.prepareStatement(queryUpdate)) {
-           stmtUpdate.setString(1, newName);
-           stmtUpdate.setInt(2, newPrice);
-           stmtUpdate.setString(3,city);
-           stmtUpdate.setInt(4, djNumber);
-           int rowsUpdated = stmtUpdate.executeUpdate();
-
-           if (rowsUpdated > 0) {
-               JOptionPane.showMessageDialog(null, "Dj updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-           }
-       }
-   } catch (SQLException e) {
-       JOptionPane.showMessageDialog(null, "Error updating dj: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-   }
+	public boolean addDj(int number, String name, int price, String city) throws HeadlessException, SQLException {
+	    boolean isAdded = false;
+	    if (areTheFieldsNull(number, name, price, city)) {
+	        JOptionPane.showMessageDialog(null, "You can't leave any of the fields empty!", "Warning", JOptionPane.WARNING_MESSAGE);
+	        return isAdded;
 	    }
-	public void removeDj(int selectedIndex, int number) {
-		 String queryDelete = "DELETE FROM dream.dj WHERE number = ?";
-   try (Connection con = DataBasecon.getConnection();
-        PreparedStatement stmtDelete = con.prepareStatement(queryDelete)) {
-       stmtDelete.setInt(1, number);
-       int rowsAffected = stmtDelete.executeUpdate();
-       if (rowsAffected > 0) {
-           JOptionPane.showMessageDialog(null, "Dj removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-       }
-   } catch (SQLException ex) {
-       ex.printStackTrace();
-       JOptionPane.showMessageDialog(null, "Error removing Dj: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-   }
-}
-}
+	    
+	    if (djAlreadyAdded(number)) {
+	        JOptionPane.showMessageDialog(null, "This dj was already added", "Warning", JOptionPane.WARNING_MESSAGE);
+	        return isAdded;
+	    }
+	    
+	    String query = "INSERT INTO dream.dj (number, name, price, city) VALUES (?, ?, ?, ?)";
+	    try (Connection con = DataBasecon.getConnection();
+	         PreparedStatement q = con.prepareStatement(query)) {
+	        q.setInt(1, number);
+	        q.setString(2, name);
+	        q.setInt(3, price);
+	        q.setString(4, city);
+	        q.executeUpdate();
+	        isAdded = true;
+	        JOptionPane.showMessageDialog(null, "Dj added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return isAdded;
+	}
+
+
+	
+	public boolean editDj(int djNumber, String newName, int newPrice, String newCity) {
+	    boolean isUpdated = false;
+	    try (Connection con = DataBasecon.getConnection()) {
+	        String queryUpdate = "UPDATE dream.dj SET name = ?, price = ?, city = ? WHERE number = ?";
+	        try (PreparedStatement stmtUpdate = con.prepareStatement(queryUpdate)) {
+	            stmtUpdate.setString(1, newName);
+	            stmtUpdate.setInt(2, newPrice);
+	            stmtUpdate.setString(3, newCity);
+	            stmtUpdate.setInt(4, djNumber);
+	            
+	            int rowsUpdated = stmtUpdate.executeUpdate();
+
+	            if (rowsUpdated > 0) {
+	                isUpdated = true;
+	                JOptionPane.showMessageDialog(null, "Dj updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        JOptionPane.showMessageDialog(null, "Error updating dj: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    return isUpdated;
+	}
+
+	public boolean removeDj(int selectedIndex, int number) {
+	    boolean isRemoved = false;
+	    String queryDelete = "DELETE FROM dream.dj WHERE number = ?";
+	    try (Connection con = DataBasecon.getConnection();
+	         PreparedStatement stmtDelete = con.prepareStatement(queryDelete)) {
+	        stmtDelete.setInt(1, number);
+	        int rowsAffected = stmtDelete.executeUpdate();
+	        if (rowsAffected > 0) {
+	            isRemoved = true;
+	            JOptionPane.showMessageDialog(null, "Dj removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	        }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error removing Dj: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    return isRemoved;
+	}
+
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+	    }

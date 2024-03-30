@@ -93,7 +93,7 @@ public class ManageEvents extends javax.swing.JFrame {
         		    }else {
         		    	DefaultTableModel  model1=(DefaultTableModel) jTable1.getModel();
         		    	int serial=(int) model1.getValueAt(selectedRowIndex, 0);
-        		    	DefaultTableModel  model2=(DefaultTableModel) budget.jTable1.getModel();
+        		    	DefaultTableModel  model2=(DefaultTableModel) Budget.jTable1.getModel();
         		    	String x=event.retrieveEventData(model2, serial);
         		    	budget.textArea1.setText(x);
         		    	dispose();

@@ -1,5 +1,4 @@
 
-@shahd
 Feature: Event Management
 
   Background:
