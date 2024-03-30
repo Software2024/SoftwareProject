@@ -5,7 +5,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "C:\\Users\\asus\\eclipse-workspace\\softwareProject1\\src\\test\\resources\\use_cases",
+		features = "C:/Users/asus/eclipse-workspace/softwareProject1/src/test/resources/use_cases",
+
         plugin = {"html:target/cucumber/wikipedia.html"},
         monochrome = true,
         snippets = CucumberOptions.SnippetType.CAMELCASE,
