@@ -65,4 +65,18 @@
 </dependency>
     
 </dependencies>
+ <build>
+        <plugins>
+            <plugin>
+                <!-- Plugin configuration -->
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version> <!-- Specify the version here -->
+                <executions>
+                    <!-- Plugin executions -->
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
