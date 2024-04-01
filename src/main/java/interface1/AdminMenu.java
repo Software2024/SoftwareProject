@@ -123,8 +123,8 @@ public class AdminMenu extends javax.swing.JFrame {
         events2.setForeground(new java.awt.Color(255, 255, 255));
         events2.setText("EVENTS");
         events2.setFocusable(false);
-        events2.addActionListener(evt -> eventsActionPerformed(evt));
-
+        events2.addActionListener(this::eventsActionPerformed);
+        
         exit.setBackground(new java.awt.Color(31, 89, 130));
         exit.setFont(new java.awt.Font(rockwell, 1, 14)); // NOI18N
         exit.setForeground(new java.awt.Color(255, 255, 255));
@@ -982,7 +982,7 @@ new SignIn().setVisible(true);
     	            populateTable(rs, jTable8,5);
     	        }
     	    } catch (SQLException ex) {
-    	        ex.printStackTrace();
+    	
     	    }
     	}
 
@@ -1026,7 +1026,7 @@ new SignIn().setVisible(true);
                 }
             }
     } catch (SQLException ex) {
-        ex.printStackTrace(); 
+      
     }
     }
 
@@ -1041,7 +1041,7 @@ new SignIn().setVisible(true);
 			user.removeUser( ssn);
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+		
 		}
 		model.removeRow(selectedIndex);
     } else {

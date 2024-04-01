@@ -6,7 +6,8 @@
   <name>ZAINA</name>
 
  <properties>
-	
+        <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    
      <maven.compiler.source>1.8</maven.compiler.source>
      <maven.compiler.target>1.8</maven.compiler.target>
   <sonar.organization>software2024</sonar.organization>
@@ -65,18 +66,5 @@
 </dependency>
     
 </dependencies>
- <build>
-        <plugins>
-            <plugin>
-                <!-- Plugin configuration -->
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version> <!-- Specify the version here -->
-                <executions>
-                    <!-- Plugin executions -->
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
