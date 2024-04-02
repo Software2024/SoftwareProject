@@ -41,7 +41,8 @@ public class Event {
 	        instance = new Event();
 	    }
 	    return instance;
-	}	
+	}
+	
 	public void setGuest(int guests) {
 		
 		 instance.guests=guests;

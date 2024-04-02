@@ -29,7 +29,6 @@ public static User getInstance() {
 public void setSSN(int ssn) {
     instance.ssn = ssn;
 }
-
 public int getSSN() {
     return instance.ssn;
 }
