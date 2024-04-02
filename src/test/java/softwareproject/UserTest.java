@@ -8,7 +8,7 @@ import io.cucumber.java.en.When;
 
 import javax.swing.table.DefaultTableModel;
 
-import interface1.Budget;
+import interfacce.Budget;
 public class UserTest {
 	 User user = new User();
 	    Event event = new Event();
