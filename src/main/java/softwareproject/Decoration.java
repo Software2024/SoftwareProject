@@ -19,7 +19,6 @@ public class Decoration {
 	private static final String ERROR = "Error";
 	private static final String SUCCESS = "Success";
 
-	
 	public Decoration() {
 		number = -1;
 		name = null;

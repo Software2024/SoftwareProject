@@ -26,7 +26,6 @@ public class Studio {
 		price = -1;
 		city = null;
 		package1 = null;
-				
 	}
 	public boolean areTheFieldsNull(int number, String name, int price, String city, String package1) {
 	 return name == null || number == -1 || price == -1 || city == null || package1 == null;

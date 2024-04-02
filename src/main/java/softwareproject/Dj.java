@@ -23,7 +23,6 @@ public Dj() {
 	price = -1;
 	city = null;
 	}
-
 public boolean areTheFieldsNull(int number, String name, int price,String city) {
             return name == null || number == -1 || price == -1 || city == null;
 	

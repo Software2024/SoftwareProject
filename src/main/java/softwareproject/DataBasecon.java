@@ -14,8 +14,7 @@ public class DataBasecon {
     
     private DataBasecon() {
         
-    }
-    
+    }    
     public static Connection getConnection() {
         try {
         if (connection == null || connection.isClosed()) {

@@ -25,7 +25,6 @@ public static User getInstance() {
         instance = new User();
     }
     return instance;
-    
 }
 public void setSSN(int ssn) {
     instance.ssn = ssn;
