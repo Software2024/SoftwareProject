@@ -228,7 +228,7 @@ javax.swing.JButton jButton14;
     
         jButton20.addActionListener((ActionEvent e) -> {
             int selectedRowIndex = jTable5.getSelectedRow();
-            actionPerformedAdd(selectedRowIndex, CATER);
+            actionPerformedAdd(selectedRowIndex, CATERC);
         });
 
 
@@ -812,7 +812,7 @@ javax.swing.JButton jButton14;
         btnUnbook1 = new JButton();
         btnUnbook1.addActionListener(e -> {
             int selectedRowIndex = jTable5.getSelectedRow();
-            actionPerformedDelete(selectedRowIndex, CATER);
+            actionPerformedDelete(selectedRowIndex, CATERC);
         });
 
         btnUnbook1.setText(UNBOOK);
@@ -1005,7 +1005,7 @@ private int skip (JTabbedPane tabbedPane){
             case STUDIO:
                 std.refreshStudio(model, city, date, price, serial);
                 break;
-            case CATER:
+            case CATERC:
                 cater.refreshCater(model, city, date, price, serial);
                 break;
             default:
@@ -1028,7 +1028,7 @@ private int skip (JTabbedPane tabbedPane){
            case STUDIO:
         	   model = (DefaultTableModel) jTable4.getModel();
         	   break;
-           case CATER:
+           case CATERC:
            	 model = (DefaultTableModel) jTable5.getModel();
            	 break;
            default:
