@@ -98,7 +98,7 @@ public class Event {
 	        return -1;
 	    }
 
-	    int serial_number = -1; 
+	    int serialNumber = -1; 
 
 	    String query = "INSERT INTO dream.event (\"bride full name\", \"groom full name\", budget, date, \"starting time\", duration, \"guest count\", theme, city_location, \"creater id\") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -122,20 +122,22 @@ public class Event {
 	        
 	        try (ResultSet generatedKeys = q.getGeneratedKeys()) {
 	            if (generatedKeys.next()) {
-	                serial_number = generatedKeys.getInt(1); 
+	            	serialNumber = generatedKeys.getInt(1); 
 	            } else {
 	                throw new SQLException("Creating event failed, no serial number obtained.");
 	            }
 	        }
 	    } catch (SQLException e) {
+	    	displayErrorMessage();
 	    }
+	    
 	    
 	    setDate(date);
 	    setCity(city);
 	    setTheme(theme);
 	    setGuest(guests);
-	    setSerial(serial_number);
-	    return serial_number; 
+	    setSerial(serialNumber);
+	    return serialNumber; 
 	}
 
 	
@@ -156,6 +158,7 @@ public class Event {
 	            }
 	        }
 	    } catch (SQLException e) {
+	    	displayErrorMessage();
 	    }
 	    
 	    return false;
@@ -201,6 +204,7 @@ public class Event {
 	                return false;
 	            }
 	        } catch (SQLException e) {
+	        	displayErrorMessage();
 	        }
 	    }
 	    return false;
@@ -385,7 +389,7 @@ public String retrieveEventData(DefaultTableModel model, int eventSerialNumber) 
             }
         }
     } catch (SQLException e) {
-     
+    	displayErrorMessage();
     }
 	return null;
 }
@@ -430,6 +434,7 @@ public String retrieveEventData(DefaultTableModel model, int eventSerialNumber) 
                 }
             }
         } catch (SQLException e) {
+        	displayErrorMessage();
         }
 
         return servicePrice;
@@ -497,6 +502,12 @@ public String retrieveEventData(DefaultTableModel model, int eventSerialNumber) 
 	public void setGroomName(String groomName) {
 		this.groomName = groomName;
 	}
+	static void displayErrorMessage() {
+	    JOptionPane.showMessageDialog(null,
+	            "There has been an error. Please try again later.",
+	            "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
 }
 	
 	

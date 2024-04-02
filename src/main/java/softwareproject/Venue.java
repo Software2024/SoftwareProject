@@ -17,7 +17,7 @@ public class Venue {
 	private String location;
 	private String description;
 	private String city;
-	
+	static final  String SUCCESS_CONSTANT = "Success";
 	public Venue(){
                 number = -1;
 		name = null;
@@ -31,40 +31,39 @@ public class Venue {
             return name == null || location == null || description == null || number == -1 || price == -1 || capacity == -1 || city == null;
 		
 	}
-	public void refreshVenue(DefaultTableModel model, String city, Date date, int price, int guests, int currentEventSerialNumber) {
+	public boolean refreshVenue(DefaultTableModel model, String city, Date date, int price, int guests, int currentEventSerialNumber) {
+	    model.setRowCount(0);
 	    model.setRowCount(0);
 	    StringBuilder queryBuilder = new StringBuilder("SELECT c.*, ");
 	    queryBuilder.append("CASE WHEN EXISTS (SELECT 1 FROM dream.event e WHERE e.venue = c.number AND e.number = ?) THEN TRUE ELSE FALSE END AS booked ");
 	    queryBuilder.append("FROM dream.venue c ");
 	    boolean whereClauseAdded = false;
-
-	    if (city != null || price > 0 || guests > 0 || date != null) {
+	    if (city != null || price > 0 || guests> 0 || date != null) {
 	        queryBuilder.append("WHERE ");
-
-	        if (city != null) {
-	            queryBuilder.append("c.city = ? ");
-	            whereClauseAdded = true;
-	        }
-	        if (price > 0) {
-	            addAndIfNeeded(queryBuilder, whereClauseAdded);
-	            queryBuilder.append("c.price <= ? ");
-	            whereClauseAdded = true;
-	        }
-	        if (guests > 0) {
-	            addAndIfNeeded(queryBuilder, whereClauseAdded);
-	            queryBuilder.append("c.capacity >= ? ");
-	            whereClauseAdded = true;
-	        }
-	        if (date != null) {
-	            addAndIfNeeded(queryBuilder, whereClauseAdded);
-	            queryBuilder.append("NOT EXISTS (SELECT 1 FROM dream.event e WHERE e.venue = c.number AND e.date = ?) ");
-	            whereClauseAdded = true;
-	        }
+	    }
+	    if (city != null) {
+	        queryBuilder.append(" c.city = ? ");
+	        whereClauseAdded = true;
+	    }
+	    if (price > 0) {
+	        addAndIfNeeded(queryBuilder, whereClauseAdded);
+	        queryBuilder.append("c.price <= ? ");
+	        whereClauseAdded = true;
+	    }
+	    if (guests> 0) {
+	        addAndIfNeeded(queryBuilder, whereClauseAdded);
+	        queryBuilder.append("c.capacity >= ? ");
+	        whereClauseAdded = true;
+	    }
+	    if (date != null) {
+	        addAndIfNeeded(queryBuilder, whereClauseAdded);
+	        queryBuilder.append("NOT EXISTS (SELECT 1 FROM dream.event e WHERE e.venue = c.number AND e.date = ?) ");
 	    }
 
-	    queryBuilder.append("OR ");
-	    queryBuilder.append("EXISTS (SELECT 1 FROM dream.event e WHERE e.venue = c.number AND e.number = ?) ");
+
+	    queryBuilder.append("OR EXISTS (SELECT 1 FROM dream.event e WHERE e.venue = c.number AND e.number = ?) ");
 	    queryBuilder.append("ORDER BY c.number ASC");
+
 	    String query = queryBuilder.toString();
 
 	    try (Connection con = DataBasecon.getConnection();
@@ -79,8 +78,8 @@ public class Venue {
 	        if (price > 0) {
 	            q.setInt(parameterIndex++, price);
 	        }
-	        if (guests > 0) {
-	            q.setInt(parameterIndex++, guests);
+	        if (guests>0) {
+	            q.setInt(parameterIndex++,guests);
 	        }
 	        if (date != null) {
 	            q.setDate(parameterIndex++, date);
@@ -89,21 +88,24 @@ public class Venue {
 
 	        try (ResultSet rs = q.executeQuery()) {
 	            while (rs.next()) {
-	                Object[] rowData = {
-	                        rs.getInt("number"),
-	                        rs.getString("name"),
-	                        rs.getInt("price"),
-	                        rs.getInt("capacity"),
-	                        rs.getString("description"),
-	                        rs.getString("location"),
-	                        rs.getBoolean("booked")
-	                };
+	            	  Object[] rowData = {
+		                        rs.getInt("number"),
+		                        rs.getString("name"),
+		                        rs.getInt("price"),
+		                        rs.getInt("capacity"),
+		                        rs.getString("description"),
+		                        rs.getString("location"),
+		                        rs.getBoolean("booked")
+		                };
 	                model.addRow(rowData);
 	            }
 	        }
 	    } catch (SQLException ex) {
+	    	ex.printStackTrace();
+	    	return false;
 	    }
 	    model.fireTableDataChanged();
+	    return true;
 	}
 
 	private void addAndIfNeeded(StringBuilder queryBuilder, boolean whereClauseAdded) {
@@ -146,7 +148,7 @@ public class Venue {
 	        q.setString(6, description);
 	        q.setString(7, city);
 	        q.executeUpdate();
-	        JOptionPane.showMessageDialog(null, "Venue added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	        JOptionPane.showMessageDialog(null, "Venue added successfully.", SUCCESS_CONSTANT, JOptionPane.INFORMATION_MESSAGE);
 	        return true;
 	    } catch (SQLException e) {
 	        return false;
@@ -170,7 +172,7 @@ public class Venue {
 
 	            if (rowsUpdated > 0) {
 	                isUpdated = true;
-	                JOptionPane.showMessageDialog(null, "Venue updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	                JOptionPane.showMessageDialog(null, "Venue updated successfully.", SUCCESS_CONSTANT, JOptionPane.INFORMATION_MESSAGE);
 	            }
 	        }
 	    } catch (SQLException e) {
@@ -191,7 +193,7 @@ public class Venue {
 	        int rowsAffected = stmtDelete.executeUpdate();
 	        if (rowsAffected > 0) {
 	            isRemoved = true;
-	            JOptionPane.showMessageDialog(null, "Venue removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	            JOptionPane.showMessageDialog(null, "Venue removed successfully.", SUCCESS_CONSTANT, JOptionPane.INFORMATION_MESSAGE);
 	        }
 	    } catch (SQLException ex) {
 	        JOptionPane.showMessageDialog(null, "Error removing venue: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

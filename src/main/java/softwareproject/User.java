@@ -35,8 +35,9 @@ public int getSSN() {
 }
 
 boolean isValidEmail(String email) {
-    final String EMAIL_REGEX ="^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    if (!Pattern.matches(EMAIL_REGEX, email)) {
+    final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern pattern = Pattern.compile(EMAIL_REGEX);
+    if (!pattern.matcher(email).matches()) {
         JOptionPane.showMessageDialog(null, "The email address is not valid.");
         return false;
     }
@@ -69,6 +70,7 @@ public boolean signUp(int ssn, String firstName, String lastName, String email, 
                 JOptionPane.showMessageDialog(null, "Welcome.");
                return true;
             } catch (SQLException e) {
+            	Event.displayErrorMessage();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Email already has an account. Please use a different email.");
@@ -100,6 +102,7 @@ public boolean logIn(String email, String password,String tableName) {
 	                }
 	            }
 	        } catch (SQLException e) {
+	        	Event.displayErrorMessage();
 	        }
 	    } else {
 	        JOptionPane.showMessageDialog(null, "Email not registered. Please sign up.");
@@ -154,7 +157,7 @@ public boolean logIn(String email, String password,String tableName) {
 	            }
 	        }
 	    } catch (SQLException ex) {
-	      
+	    	Event.displayErrorMessage();
 	    }
 	    
 	    return eventData;
@@ -183,6 +186,7 @@ public boolean logIn(String email, String password,String tableName) {
 	            }
 	        }
 	    } catch (SQLException ex) {
+	    	Event.displayErrorMessage();
 	    }
 	    
 	    return isAdmin;

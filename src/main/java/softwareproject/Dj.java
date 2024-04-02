@@ -29,7 +29,7 @@ public boolean areTheFieldsNull(int number, String name, int price,String city) 
             return name == null || number == -1 || price == -1 || city == null;
 	
 }
-	public void refreshDj(DefaultTableModel model, String city, Date date, int price, int currentEventSerialNumber) {
+	public boolean refreshDj(DefaultTableModel model, String city, Date date, int price, int currentEventSerialNumber) {
 	    model.setRowCount(0);
 	    StringBuilder queryBuilder = new StringBuilder("SELECT c.*, ");
 	    queryBuilder.append("CASE WHEN EXISTS (SELECT 1 FROM dream.event e WHERE e.dj = c.number AND e.number = ?) THEN TRUE ELSE FALSE END AS booked ");
@@ -38,6 +38,7 @@ public boolean areTheFieldsNull(int number, String name, int price,String city) 
 
 	    if (city != null || price > 0 || date != null) {
 	        queryBuilder.append("WHERE ");
+	    }
 	        if (city != null) {
 	            queryBuilder.append("c.city = ? ");
 	            whereClauseAdded = true;
@@ -56,7 +57,7 @@ public boolean areTheFieldsNull(int number, String name, int price,String city) 
 	            queryBuilder.append("NOT EXISTS (SELECT 1 FROM dream.event e WHERE e.dj = c.number AND e.date = ?) ");
 	            whereClauseAdded = true;
 	        }
-	    }
+
 
 	    queryBuilder.append("OR ");
 	    queryBuilder.append("EXISTS (SELECT 1 FROM dream.event e WHERE e.dj = c.number AND e.number = ?) ");
@@ -94,9 +95,10 @@ public boolean areTheFieldsNull(int number, String name, int price,String city) 
 	            }
 	        }
 	    } catch (SQLException ex) {
-	    	
+	    	return false;
 	    }
 	    model.fireTableDataChanged();
+	    return true;
 	}
 
 
@@ -137,6 +139,9 @@ public boolean areTheFieldsNull(int number, String name, int price,String city) 
 	        isAdded = true;
 	        JOptionPane.showMessageDialog(null, "Dj added successfully.",SUCCESS, JOptionPane.INFORMATION_MESSAGE);
 	    } catch (SQLException e) {
+	    	 JOptionPane.showMessageDialog(null,
+                     "There has been an error. Please try again later.",
+                     "Error", JOptionPane.ERROR_MESSAGE);
 	    }
 	    return isAdded;
 	}

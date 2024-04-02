@@ -28,18 +28,18 @@ public class Decoration {
 	}
 	public boolean areTheFieldsNull(int number, String name, int price, String theme, String city) {
 		return (name == null || number == -1 || price == -1 || theme == null || city == null);
-		
-		
 	}
-	public void refreshDec(DefaultTableModel model, String city, Date date, int price, String theme, int currentEventSerialNumber) {
+	public boolean refreshDec(DefaultTableModel model, String city, Date date, int price, String theme, int currentEventSerialNumber) {
 	    model.setRowCount(0);
 	    StringBuilder queryBuilder = new StringBuilder("SELECT c.*, ");
 	    queryBuilder.append("CASE WHEN EXISTS (SELECT 1 FROM dream.event e WHERE e.decorations = c.number AND e.number = ?) THEN TRUE ELSE FALSE END AS booked ");
 	    queryBuilder.append("FROM dream.decorations c ");
 	    boolean whereClauseAdded = false;
-
+	    if (city != null || price > 0 || theme != null || date != null) {
+	        queryBuilder.append("WHERE ");
+	    }
 	    if (city != null) {
-	        queryBuilder.append("WHERE c.city = ? ");
+	        queryBuilder.append(" c.city = ? ");
 	        whereClauseAdded = true;
 	    }
 	    if (price > 0) {
@@ -56,6 +56,7 @@ public class Decoration {
 	        addAndIfNeeded(queryBuilder, whereClauseAdded);
 	        queryBuilder.append("NOT EXISTS (SELECT 1 FROM dream.event e WHERE e.decorations = c.number AND e.date = ?) ");
 	    }
+
 
 	    queryBuilder.append("OR EXISTS (SELECT 1 FROM dream.event e WHERE e.decorations = c.number AND e.number = ?) ");
 	    queryBuilder.append("ORDER BY c.number ASC");
@@ -96,8 +97,10 @@ public class Decoration {
 	            }
 	        }
 	    } catch (SQLException ex) {
+	    	return false;
 	    }
 	    model.fireTableDataChanged();
+	    return true;
 	}
 
 	private void addAndIfNeeded(StringBuilder queryBuilder, boolean whereClauseAdded) {
@@ -105,6 +108,7 @@ public class Decoration {
 	        queryBuilder.append("AND ");
 	    }
 	}
+
 
 
 

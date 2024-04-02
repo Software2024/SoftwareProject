@@ -8,7 +8,7 @@ public class DataBasecon {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/dream";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "shahd";
+    private static final String SHAHD_CONSTANT = "shahd";
 	
     private static Connection connection = null;
     
@@ -21,12 +21,14 @@ public class DataBasecon {
     public static Connection getConnection() {
         try {
         if (connection == null || connection.isClosed()) {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(URL, USER,SHAHD_CONSTANT);
         }
 
         } catch (SQLException e) {
-        }
-    return connection;
+        	Event.displayErrorMessage();
+         }
+         return connection;
+    
     }
 
     public static void closeConnection() {
@@ -34,6 +36,7 @@ public class DataBasecon {
             try {
                 connection.close();
             } catch (SQLException e) {
+            	Event.displayErrorMessage();
             }
         }
     }

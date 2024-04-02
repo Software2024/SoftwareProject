@@ -29,7 +29,7 @@ public class Cater {
 	public boolean areTheFieldsNull(int number, String name, int price, String package1 , String city) {
 		return (name == null || number == -1 || price == -1 || package1 == null || city == null);
 	}
-	public void refreshCater(DefaultTableModel model, String city, Date date, int price, int currentEventSerialNumber) {
+	public boolean refreshCater(DefaultTableModel model, String city, Date date, int price, int currentEventSerialNumber) {
 	    model.setRowCount(0);
 	    StringBuilder queryBuilder = new StringBuilder("SELECT c.*, ");
 	    queryBuilder.append("CASE WHEN EXISTS (SELECT 1 FROM dream.event e WHERE e.cater = c.number AND e.number = ?) THEN TRUE ELSE FALSE END AS booked ");
@@ -96,8 +96,10 @@ public class Cater {
 	            }
 	        }
 	    } catch (SQLException ex) {
+	    	return false;
 	    }
 	    model.fireTableDataChanged();
+	    return true;
 	}
 
 	public boolean caterAlreadyAdded(int number) throws SQLException {
@@ -137,8 +139,10 @@ public class Cater {
 	            isAdded = true;
 	            JOptionPane.showMessageDialog(null, "Caterer added successfully.", SUCCESS, JOptionPane.INFORMATION_MESSAGE);
 	        } catch (SQLException e) {
+	        	return false;
 	        	        }
 	    } catch (HeadlessException | SQLException e) {
+	    	return false;
 	
 	    }
 	    return isAdded;

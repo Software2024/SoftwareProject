@@ -32,7 +32,7 @@ public class Studio {
 	public boolean areTheFieldsNull(int number, String name, int price, String city, String package1) {
 	 return name == null || number == -1 || price == -1 || city == null || package1 == null;
 	}
-	public void refreshStudio(DefaultTableModel model, String city, Date date, int price, int currentEventSerialNumber) {
+	public boolean refreshStudio(DefaultTableModel model, String city, Date date, int price, int currentEventSerialNumber) {
 	    model.setRowCount(0);
 	    StringBuilder queryBuilder = new StringBuilder("SELECT c.*, ");
 	    queryBuilder.append("CASE WHEN EXISTS (SELECT 1 FROM dream.event e WHERE e.studio = c.number AND e.number = ?) THEN TRUE ELSE FALSE END AS booked ");
@@ -41,6 +41,7 @@ public class Studio {
 
 	    if (city != null || price > 0 || date != null) {
 	        queryBuilder.append("WHERE ");
+	    }
 	        if (city != null) {
 	            queryBuilder.append("c.city = ? ");
 	            whereClauseAdded = true;
@@ -58,7 +59,7 @@ public class Studio {
 	            }
 	            queryBuilder.append("NOT EXISTS (SELECT 1 FROM dream.event e WHERE e.studio = c.number AND e.date = ?) ");
 	        }
-	    }
+	    
 
 	    queryBuilder.append("OR ");
 	    queryBuilder.append("EXISTS (SELECT 1 FROM dream.event e WHERE e.studio = c.number AND e.number = ?) ");
@@ -97,8 +98,10 @@ public class Studio {
 	            }
 	        }
 	    } catch (SQLException ex) {
+	    	return false;
 	    }
 	    model.fireTableDataChanged();
+	    return true;
 	}
 
 	public boolean studioAlreadyAdded(int number) throws SQLException {
@@ -140,6 +143,7 @@ public class Studio {
 	            JOptionPane.showMessageDialog(null, "Studio added successfully.", SUCCESS, JOptionPane.INFORMATION_MESSAGE);
 	        }
 	    } catch (SQLException | HeadlessException e) {
+	    	Event.displayErrorMessage();
 	    }
 	    return isAdded;
 	}
