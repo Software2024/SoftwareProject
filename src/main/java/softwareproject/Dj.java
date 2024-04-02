@@ -17,7 +17,6 @@ private int price;
 private String city;
 private static final String SUCCESS = "Success"; 
 
-
 public Dj() {
 	number= -1;
 	name =null;

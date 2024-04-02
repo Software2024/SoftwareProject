@@ -27,6 +27,7 @@ public class Venue {
 		city = null;
 	}
 	
+	
 	public boolean areTheFieldsNull(int number, String name, int price, int capacity, String location, String description, String city) {
             return name == null || location == null || description == null || number == -1 || price == -1 || capacity == -1 || city == null;
 		

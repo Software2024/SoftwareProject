@@ -18,6 +18,7 @@ public class Decoration {
 	private String city;
 	private static final String ERROR = "Error";
 	private static final String SUCCESS = "Success";
+
 	
 	public Decoration() {
 		number = -1;

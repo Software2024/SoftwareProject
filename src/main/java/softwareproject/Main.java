@@ -10,4 +10,5 @@ public class Main {
 		
 	      new WelcomePage().setVisible(true);
 	  }
+	   
 }

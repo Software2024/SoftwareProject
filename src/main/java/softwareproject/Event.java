@@ -42,10 +42,7 @@ public class Event {
 	    }
 	    return instance;
 	}
-	 
-
-	 
-	
+	 	
 	public void setGuest(int guests) {
 		
 		 instance.guests=guests;
@@ -486,7 +483,6 @@ public String retrieveEventData(DefaultTableModel model, int eventSerialNumber) 
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-          
             return false;
         }
     }

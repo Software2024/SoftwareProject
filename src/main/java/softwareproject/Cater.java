@@ -17,7 +17,7 @@ public class Cater {
 	private int price;
 	private String package1;
 	private String city;
-	private static final String SUCCESS = "Success";
+	private static final String SUCCESS = "Success ";
 	
 	public Cater() {
 		number = -1;
